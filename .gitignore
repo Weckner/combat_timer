@@ -1,0 +1,9 @@
+# Editor
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Backup
+*.bak
+*.backup
