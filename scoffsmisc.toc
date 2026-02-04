@@ -1,8 +1,0 @@
-## Interface: 120000
-## Title: Scoffs Misc
-## Notes: Addon functionality for missing utility weakauras
-## Author: Scoffs
-## Version: 1.0.1
-## SavedVariables: ScoffsMiscDB, ScoffsMiscFontDB
-
-scoffsmisc.lua

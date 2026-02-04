@@ -1,8 +1,8 @@
 --[[
-    Scoffs Misc - Combat Status Indicator
+    Combat Timer - Combat Status Indicator
     Shows Combat+ / Combat- on status change (flashes for 2 seconds)
     Shows 00:00 timer during combat (hidden until combat starts)
-    Drag to move. Use /sm font <size> to change timer font size.
+    Drag to move. Use /ct font <size> to change timer font size.
 ]]
 
 local STATUS_FLASH_DURATION = 2
@@ -83,8 +83,8 @@ local function OnLeaveCombat()
 end
 
 local function MakeMovable(frame, key)
-    ScoffsMiscDB = ScoffsMiscDB or {}
-    local db = ScoffsMiscDB[key] or {}
+    CombatTimerDB = CombatTimerDB or {}
+    local db = CombatTimerDB[key] or {}
     local d = DEFAULTS[key]
     local point, relPoint = db.point or d.point, db.relPoint or d.relPoint
     local x, y = db.x or d.x, db.y or d.y
@@ -108,17 +108,17 @@ local function MakeMovable(frame, key)
     overlay:SetScript("OnDragStop", function()
         frame:StopMovingOrSizing()
         local p, _, r, x2, y2 = frame:GetPoint()
-        ScoffsMiscDB[key] = ScoffsMiscDB[key] or {}
-        ScoffsMiscDB[key].point = p
-        ScoffsMiscDB[key].relPoint = r
-        ScoffsMiscDB[key].x = x2
-        ScoffsMiscDB[key].y = y2
+        CombatTimerDB[key] = CombatTimerDB[key] or {}
+        CombatTimerDB[key].point = p
+        CombatTimerDB[key].relPoint = r
+        CombatTimerDB[key].x = x2
+        CombatTimerDB[key].y = y2
     end)
 end
 
 local function ApplyTimerFont()
-    ScoffsMiscFontDB = ScoffsMiscFontDB or {}
-    local size = ScoffsMiscFontDB.timerSize or (ScoffsMiscDB and ScoffsMiscDB.timerFontSize) or DEFAULT_TIMER_FONT
+    CombatTimerFontDB = CombatTimerFontDB or {}
+    local size = CombatTimerFontDB.timerSize or (CombatTimerDB and CombatTimerDB.timerFontSize) or DEFAULT_TIMER_FONT
     if timerText then
         local path, _, flags = timerText:GetFont()
         timerText:SetFont(path or "Fonts\\ARIALN.TTF", size, flags or "")
@@ -126,9 +126,9 @@ local function ApplyTimerFont()
 end
 
 local function Setup()
-    ScoffsMiscDB = ScoffsMiscDB or {}
+    CombatTimerDB = CombatTimerDB or {}
 
-    statusFrame = CreateFrame("Frame", "ScoffsMiscStatusFrame", UIParent)
+    statusFrame = CreateFrame("Frame", "CombatTimerStatusFrame", UIParent)
     statusFrame:SetAlpha(0)
     statusFrame:Hide()
     MakeMovable(statusFrame, "status")
@@ -138,7 +138,7 @@ local function Setup()
     statusText:SetShadowColor(0, 0, 0, 1)
     statusText:SetShadowOffset(1, -1)
 
-    timerFrame = CreateFrame("Frame", "ScoffsMiscTimerFrame", UIParent)
+    timerFrame = CreateFrame("Frame", "CombatTimerTimerFrame", UIParent)
     timerFrame:Hide()
     MakeMovable(timerFrame, "timer")
     timerText = timerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
@@ -153,7 +153,7 @@ local function Setup()
     eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
     eventFrame:RegisterEvent("ADDON_LOADED")
     eventFrame:SetScript("OnEvent", function(_, event, addonName)
-        if event == "ADDON_LOADED" and addonName == "scoffsmisc" then
+        if event == "ADDON_LOADED" and addonName == "combat timer" then
             ApplyTimerFont()
         elseif event == "PLAYER_REGEN_DISABLED" then
             if not editMode then OnEnterCombat() end
@@ -182,13 +182,13 @@ local function Setup()
         end
         print("Edit mode OFF")
     end
-    SLASH_SCOFFSMISC1 = "/scoffsmisc"
-    SLASH_SCOFFSMISC2 = "/sm"
-    SlashCmdList["SCOFFSMISC"] = function(msg)
+    SLASH_COMBATTIMER1 = "/combattimer"
+    SLASH_COMBATTIMER2 = "/ct"
+    SlashCmdList["COMBATTIMER"] = function(msg)
         local cmd = (msg or ""):lower():match("^%s*(.-)%s*$")
         if cmd == "reset" then
-            ScoffsMiscDB.status = nil
-            ScoffsMiscDB.timer = nil
+            CombatTimerDB.status = nil
+            CombatTimerDB.timer = nil
             leaveEditMode()
             Setup()
             enterEditMode()
@@ -201,16 +201,16 @@ local function Setup()
             elseif arg == "large" then size = 20
             elseif arg ~= "" then size = tonumber(arg) end
             if size and size >= 8 and size <= 48 then
-                ScoffsMiscFontDB.timerSize = size
+                CombatTimerFontDB.timerSize = size
                 ApplyTimerFont()
                 print("Timer font size set to " .. size)
             else
-                ScoffsMiscFontDB = ScoffsMiscFontDB or {}
-                local cur = ScoffsMiscFontDB.timerSize or DEFAULT_TIMER_FONT
-                print("Timer font " .. cur .. ". Use: /sm font <8-48> or small/medium/large")
+                CombatTimerFontDB = CombatTimerFontDB or {}
+                local cur = CombatTimerFontDB.timerSize or DEFAULT_TIMER_FONT
+                print("Timer font " .. cur .. ". Use: /ct font <8-48> or small/medium/large")
             end
         elseif cmd == "help" or cmd == "?" then
-            print("  /sm | /scoffsmisc - Toggle edit mode")
+            print("  /ct | /combattimer - Toggle edit mode")
             print("  font <size> - Timer font: 8-48, or small/medium/large")
             print("  reset - Reset positions to default")
         else

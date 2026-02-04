@@ -1,0 +1,8 @@
+## Interface: 120000
+## Title: Combat Timer
+## Notes: Combat status indicator and timer
+## Author: Scoffs
+## Version: 1.0.1
+## SavedVariables: CombatTimerDB, CombatTimerFontDB
+
+combat timer.lua
