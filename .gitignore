@@ -7,3 +7,5 @@
 # Backup
 *.bak
 *.backup
+apichanges.txt
+cvarlist.txt

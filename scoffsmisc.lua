@@ -117,7 +117,8 @@ local function MakeMovable(frame, key)
 end
 
 local function ApplyTimerFont()
-    local size = (ScoffsMiscDB and ScoffsMiscDB.timerFontSize) or DEFAULT_TIMER_FONT
+    ScoffsMiscFontDB = ScoffsMiscFontDB or {}
+    local size = ScoffsMiscFontDB.timerSize or (ScoffsMiscDB and ScoffsMiscDB.timerFontSize) or DEFAULT_TIMER_FONT
     if timerText then
         local path, _, flags = timerText:GetFont()
         timerText:SetFont(path or "Fonts\\ARIALN.TTF", size, flags or "")
@@ -150,8 +151,11 @@ local function Setup()
     local eventFrame = CreateFrame("Frame", nil, UIParent)
     eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
     eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-    eventFrame:SetScript("OnEvent", function(_, event)
-        if event == "PLAYER_REGEN_DISABLED" then
+    eventFrame:RegisterEvent("ADDON_LOADED")
+    eventFrame:SetScript("OnEvent", function(_, event, addonName)
+        if event == "ADDON_LOADED" and addonName == "scoffsmisc" then
+            ApplyTimerFont()
+        elseif event == "PLAYER_REGEN_DISABLED" then
             if not editMode then OnEnterCombat() end
         elseif event == "PLAYER_REGEN_ENABLED" then
             if not editMode then OnLeaveCombat() end
@@ -197,11 +201,12 @@ local function Setup()
             elseif arg == "large" then size = 20
             elseif arg ~= "" then size = tonumber(arg) end
             if size and size >= 8 and size <= 48 then
-                ScoffsMiscDB.timerFontSize = size
+                ScoffsMiscFontDB.timerSize = size
                 ApplyTimerFont()
                 print("Timer font size set to " .. size)
             else
-                local cur = (ScoffsMiscDB and ScoffsMiscDB.timerFontSize) or DEFAULT_TIMER_FONT
+                ScoffsMiscFontDB = ScoffsMiscFontDB or {}
+                local cur = ScoffsMiscFontDB.timerSize or DEFAULT_TIMER_FONT
                 print("Timer font " .. cur .. ". Use: /sm font <8-48> or small/medium/large")
             end
         elseif cmd == "help" or cmd == "?" then
