@@ -125,6 +125,27 @@ local function ApplyTimerFont()
     end
 end
 
+-- Re-apply position/size and font from DB (for Persistent Settings addon)
+local function RefreshLayoutFromDB()
+    if not statusFrame or not timerFrame then return end
+    CombatTimerDB = CombatTimerDB or {}
+    local function applyPosition(frame, key)
+        local db = CombatTimerDB[key]
+        local d = DEFAULTS[key]
+        if not db then return end
+        local point = db.point or d.point
+        local relPoint = db.relPoint or d.relPoint
+        local x, y = db.x or d.x, db.y or d.y
+        local w, h = db.w or d.w, db.h or d.h
+        frame:ClearAllPoints()
+        frame:SetPoint(point, UIParent, relPoint, x, y)
+        frame:SetSize(w, h)
+    end
+    applyPosition(statusFrame, "status")
+    applyPosition(timerFrame, "timer")
+    ApplyTimerFont()
+end
+
 local function Setup()
     CombatTimerDB = CombatTimerDB or {}
 
@@ -222,6 +243,7 @@ local function Setup()
             end
         end
     end
+    _G.CombatTimer_RefreshLayout = RefreshLayoutFromDB
 end
 
 Setup()

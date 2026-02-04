@@ -1,6 +1,6 @@
 # Combat Timer
 
-Combat status indicator for World of Warcraft (Midnight expansion, Interface 120000).
+Combat status indicator for World of Warcraft
 
 ## Features
 
@@ -31,7 +31,7 @@ Use `/ct` (or `/combattimer`) to toggle edit mode. When enabled, drag the status
 
 ## Requirements
 
-- World of Warcraft (Midnight, Interface 120000)
+- World of Warcraft
 
 ## License
 
