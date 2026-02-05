@@ -29,9 +29,9 @@ Combat status indicator for World of Warcraft
 
 Use `/ct` (or `/combattimer`) to toggle edit mode. When enabled, drag the status and timer frames to position them. Run `/ct` again to exit.
 
-## Requirements
+## Compatabilies
 
-- World of Warcraft
+- Persistent Settings addon to copy settings between characters.
 
 ## License
 
