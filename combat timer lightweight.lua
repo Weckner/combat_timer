@@ -73,12 +73,12 @@ local function StopCombatTimer()
 end
 
 local function OnEnterCombat()
-    ShowStatusFlash("combat+")
+    ShowStatusFlash("+COMBAT+")
     StartCombatTimer()
 end
 
 local function OnLeaveCombat()
-    ShowStatusFlash("combat-")
+    ShowStatusFlash("-COMBAT-")
     StopCombatTimer()
 end
 
@@ -95,7 +95,7 @@ local function MakeMovable(frame, key)
     frame:SetSize(w, h)
     frame:SetMovable(true)
 
-    -- Drag overlay: transparent frame on top to capture drag (FontStrings don't receive drag)
+    -- Drag overlay: transparent frame on top to capture drag
     local overlay = CreateFrame("Frame", nil, frame)
     overlay:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
     overlay:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
