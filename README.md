@@ -4,7 +4,7 @@ Combat status indicator for World of Warcraft
 
 ## Features
 
-- **Combat+ / Combat-** – Displays status text when entering or leaving combat (flashes for 2 seconds)
+- **+COMBAT+ / -Combat-** – Displays status text when entering or leaving combat (flashes for 2 seconds)
 - **Combat timer** – 00:00 format timer during combat (hidden until combat starts)
 - **Draggable frames** – Move status and timer independently in edit mode
 - **Timer font size** – Adjust via slash command (8–48 or small/medium/large)
